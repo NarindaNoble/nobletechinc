@@ -1,0 +1,42 @@
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://nobletechinc.com/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /private/
+
+# Allow crawling of static assets
+Allow: /images/
+Allow: /fonts/
+Allow: /icons/
+
+# Crawl-delay for specific bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+# Block specific bots
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+# Clean parameters
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content
+Clean-param: fbclid&gclid&msclkid 

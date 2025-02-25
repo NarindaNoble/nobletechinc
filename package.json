@@ -2,26 +2,74 @@
   "name": "nobletechinc",
   "version": "0.1.0",
   "private": true,
+  "description": "A cutting-edge, cyberpunk-inspired landing page built with Next.js",
+  "author": "Narinda Noble",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/narindanoble/nobletechinc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/narindanoble/nobletechinc/issues"
+  },
+  "homepage": "https://github.com/narindanoble/nobletechinc#readme",
+  "keywords": [
+    "next.js",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "framer-motion",
+    "cyberpunk",
+    "landing-page"
+  ],
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json,css}\"",
+    "prepare": "husky install"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.1.7"
+    "@heroicons/react": "^2.2.0",
+    "@react-three/drei": "^10.0.1",
+    "@react-three/fiber": "^9.0.4",
+    "@react-three/flex": "^1.0.1",
+    "@react-three/postprocessing": "^3.0.4",
+    "framer-motion": "^12.4.7",
+    "next": "^14.1.0",
+    "postprocessing": "^6.36.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-intersection-observer": "^9.15.1",
+    "three": "^0.173.0"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "postcss": "^8",
+    "@types/node": "^20.17.19",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.1.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.0",
+    "postcss": "^8.4.35",
+    "prettier": "^3.0.0",
     "tailwindcss": "^3.4.1",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.7",
-    "@eslint/eslintrc": "^3"
+    "typescript": "^5.3.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,json,css}": [
+      "prettier --write"
+    ]
   }
 }
