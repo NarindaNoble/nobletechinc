@@ -1,0 +1,339 @@
+/* AuraPunk Design System - Fusion of Palantir's enterprise aesthetic with NobleTech's cyberpunk theme */
+
+:root {
+  /* AuraPunk Color Palette */
+  --aura-background: #0A0E27;        /* Deep navy-black (Palantir inspired) */
+  --aura-surface: #1A1D2E;           /* Elevated cards */
+  --aura-surface-elevated: #252A3F;   /* Higher elevation */
+  --aura-accent-primary: #00E1F4;     /* Neon cyan - interactive elements */
+  --aura-accent-secondary: #7B61FF;   /* Electric purple - secondary actions */
+  --aura-accent-critical: #F5A623;    /* Amber - alerts/predictions */
+  --aura-accent-success: #00FF9F;     /* Neon green - positive metrics */
+  --aura-accent-danger: #FF006E;      /* Neon magenta - risks */
+  --aura-accent-warning: #FFD700;     /* Gold - warnings */
+  
+  /* Text Colors */
+  --aura-text-primary: #E5E7EB;      /* High contrast text */
+  --aura-text-secondary: #9CA3AF;    /* Secondary text */
+  --aura-text-muted: #6B7280;        /* Muted text */
+  --aura-text-inverse: #0A0E27;      /* Text on light backgrounds */
+  
+  /* Data Visualization Colors */
+  --aura-chart-primary: #00E1F4;
+  --aura-chart-secondary: #7B61FF;
+  --aura-chart-tertiary: #F5A623;
+  --aura-chart-quaternary: #00FF9F;
+  --aura-chart-quinary: #FF006E;
+  
+  /* Glow Effects */
+  --aura-glow-primary: 0 0 20px rgba(0, 225, 244, 0.3);
+  --aura-glow-secondary: 0 0 20px rgba(123, 97, 255, 0.3);
+  --aura-glow-critical: 0 0 20px rgba(245, 166, 35, 0.3);
+  --aura-glow-success: 0 0 20px rgba(0, 255, 159, 0.3);
+  --aura-glow-danger: 0 0 20px rgba(255, 0, 110, 0.3);
+  
+  /* Shadows */
+  --aura-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --aura-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --aura-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --aura-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  
+  /* Border Radius */
+  --aura-radius-sm: 0.375rem;
+  --aura-radius-md: 0.5rem;
+  --aura-radius-lg: 0.75rem;
+  --aura-radius-xl: 1rem;
+  
+  /* Spacing */
+  --aura-space-xs: 0.25rem;
+  --aura-space-sm: 0.5rem;
+  --aura-space-md: 1rem;
+  --aura-space-lg: 1.5rem;
+  --aura-space-xl: 2rem;
+  --aura-space-2xl: 3rem;
+  
+  /* Typography */
+  --aura-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --aura-font-display: 'Chakra Petch', 'Inter', sans-serif;
+  
+  /* Animation Durations */
+  --aura-duration-fast: 150ms;
+  --aura-duration-normal: 300ms;
+  --aura-duration-slow: 500ms;
+  
+  /* Z-Index Scale */
+  --aura-z-dropdown: 1000;
+  --aura-z-sticky: 1020;
+  --aura-z-fixed: 1030;
+  --aura-z-modal: 1040;
+  --aura-z-popover: 1050;
+  --aura-z-tooltip: 1060;
+}
+
+/* Base Styles */
+.aura-theme {
+  background-color: var(--aura-background);
+  color: var(--aura-text-primary);
+  font-family: var(--aura-font-mono);
+}
+
+/* Card Components */
+.aura-card {
+  background-color: var(--aura-surface);
+  border: 1px solid rgba(0, 225, 244, 0.1);
+  border-radius: var(--aura-radius-lg);
+  padding: var(--aura-space-lg);
+  box-shadow: var(--aura-shadow-md);
+  transition: all var(--aura-duration-normal) ease;
+}
+
+.aura-card:hover {
+  border-color: rgba(0, 225, 244, 0.3);
+  box-shadow: var(--aura-glow-primary);
+  transform: translateY(-2px);
+}
+
+.aura-card-elevated {
+  background-color: var(--aura-surface-elevated);
+  border-color: rgba(123, 97, 255, 0.2);
+}
+
+/* Data Visualization Cards */
+.aura-metric-card {
+  @apply aura-card;
+  position: relative;
+  overflow: hidden;
+}
+
+.aura-metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--aura-accent-primary), var(--aura-accent-secondary));
+}
+
+.aura-metric-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: var(--aura-font-display);
+  color: var(--aura-accent-primary);
+  text-shadow: var(--aura-glow-primary);
+}
+
+.aura-metric-label {
+  color: var(--aura-text-secondary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Status Indicators */
+.aura-status-healthy {
+  color: var(--aura-accent-success);
+  text-shadow: var(--aura-glow-success);
+}
+
+.aura-status-warning {
+  color: var(--aura-accent-warning);
+  text-shadow: var(--aura-glow-critical);
+}
+
+.aura-status-critical {
+  color: var(--aura-accent-danger);
+  text-shadow: var(--aura-glow-danger);
+  animation: pulse 2s infinite;
+}
+
+/* Buttons */
+.aura-btn {
+  @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.aura-btn-primary {
+  background: linear-gradient(135deg, var(--aura-accent-primary), var(--aura-accent-secondary));
+  color: var(--aura-text-inverse);
+  box-shadow: var(--aura-glow-primary);
+}
+
+.aura-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--aura-glow-primary), var(--aura-shadow-lg);
+}
+
+.aura-btn-secondary {
+  background-color: var(--aura-surface);
+  border-color: var(--aura-accent-primary);
+  color: var(--aura-accent-primary);
+}
+
+.aura-btn-secondary:hover {
+  background-color: rgba(0, 225, 244, 0.1);
+  box-shadow: var(--aura-glow-primary);
+}
+
+/* Input Fields */
+.aura-input {
+  @apply w-full px-4 py-3 rounded-lg transition-all duration-300;
+  background-color: var(--aura-surface);
+  border: 1px solid rgba(0, 225, 244, 0.2);
+  color: var(--aura-text-primary);
+}
+
+.aura-input:focus {
+  border-color: var(--aura-accent-primary);
+  box-shadow: var(--aura-glow-primary);
+  outline: none;
+}
+
+.aura-input::placeholder {
+  color: var(--aura-text-muted);
+}
+
+/* Charts and Data Visualization */
+.aura-chart-container {
+  background-color: var(--aura-surface);
+  border-radius: var(--aura-radius-lg);
+  padding: var(--aura-space-lg);
+  border: 1px solid rgba(0, 225, 244, 0.1);
+}
+
+.aura-chart-title {
+  font-family: var(--aura-font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--aura-text-primary);
+  margin-bottom: var(--aura-space-md);
+}
+
+/* Glitch Effects for Anomalies */
+.aura-glitch {
+  position: relative;
+  animation: glitch 2s infinite;
+}
+
+.aura-glitch::before,
+.aura-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.aura-glitch::before {
+  color: var(--aura-accent-danger);
+  animation: glitch-anim-1 0.3s infinite;
+}
+
+.aura-glitch::after {
+  color: var(--aura-accent-secondary);
+  animation: glitch-anim-2 0.3s infinite;
+}
+
+/* Tech Grid Background */
+.aura-tech-grid {
+  background-image: 
+    linear-gradient(rgba(0, 225, 244, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 225, 244, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 0;
+}
+
+/* Loading States */
+.aura-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.aura-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 225, 244, 0.2),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* Animations */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-anim-1 {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-anim-2 {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(2px, -2px); }
+  40% { transform: translate(2px, 2px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(-2px, 2px); }
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .aura-metric-value {
+    font-size: 2rem;
+  }
+  
+  .aura-card {
+    padding: var(--aura-space-md);
+  }
+}
+
+/* Dark mode adjustments (if needed) */
+@media (prefers-color-scheme: light) {
+  .aura-theme {
+    /* Light mode overrides would go here if needed */
+  }
+}
+
+/* Print styles */
+@media print {
+  .aura-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .aura-glow-primary,
+  .aura-glow-secondary,
+  .aura-glow-critical,
+  .aura-glow-success,
+  .aura-glow-danger {
+    box-shadow: none;
+  }
+}

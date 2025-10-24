@@ -1,8 +1,9 @@
 import React from 'react'
 import { JetBrains_Mono, Chakra_Petch } from 'next/font/google'
 import ClientThemeProvider from '@/components/ClientThemeProvider'
-import { metadata } from './metadata'
+import { metadata, viewport } from './metadata'
 import './globals.css'
+import '../styles/aura-theme.css'
 
 const chakraPetch = Chakra_Petch({
   subsets: ['latin'],
@@ -15,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-jetbrains-mono',
 })
 
-export { metadata }
+export { metadata, viewport }
 
 export default function RootLayout({
   children,

@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+import { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
   title: 'NobleTechInc - Transforming Ideas into Digital Excellence',
@@ -16,11 +16,6 @@ export const metadata: Metadata = {
   creator: 'NobleTechInc',
   publisher: 'NobleTechInc',
   robots: 'index, follow',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' }
-  ],
-  viewport: 'width=device-width, initial-scale=1',
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
@@ -50,4 +45,13 @@ export const metadata: Metadata = {
     description: 'Innovative technology solutions for modern businesses',
     images: ['/twitter-image.jpg']
   }
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' }
+  ],
 } 

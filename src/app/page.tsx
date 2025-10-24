@@ -9,6 +9,7 @@ import Portfolio from '@/components/Portfolio'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import ScrollToTop from '@/components/ScrollToTop'
+import AuraNavigation from '@/components/AuraNavigation'
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
         <Footer />
       </main>
       <ScrollToTop />
+      <AuraNavigation />
     </div>
   )
 }

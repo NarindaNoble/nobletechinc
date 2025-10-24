@@ -1,0 +1,264 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Core Models for Aura Platform
+
+model Organization {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  domain      String?  @unique
+  clerkOrgId  String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  users       User[]
+  projects    Project[]
+  
+  @@map("organizations")
+}
+
+model User {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  clerkUserId String   @unique
+  email       String
+  firstName   String?
+  lastName    String?
+  role        UserRole @default(MEMBER)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  organizationId String?  @db.ObjectId
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  tasks          CEOTask[]
+  
+  @@map("users")
+}
+
+enum UserRole {
+  CEO
+  ADMIN
+  MEMBER
+}
+
+// ALI Module Models
+
+model Project {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  status      ProjectStatus @default(ACTIVE)
+  startDate   DateTime?
+  endDate     DateTime?
+  budget      Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  organizationId String  @db.ObjectId
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  metrics       ProjectMetrics[]
+  tickets       MaintenanceTicket[]
+  decommissionPlan DecommissionPlan?
+  
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  ACTIVE
+  MAINTENANCE
+  DECOMMISSIONING
+  ARCHIVED
+}
+
+model ProjectMetrics {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId   String   @db.ObjectId
+  metricType  MetricType
+  value       Float
+  unit        String?
+  timestamp   DateTime @default(now())
+  
+  // Relations
+  project     Project @relation(fields: [projectId], references: [id])
+  
+  @@map("project_metrics")
+}
+
+enum MetricType {
+  CLOUD_SPEND
+  UPTIME_PERCENTAGE
+  ERROR_RATE
+  RESPONSE_TIME
+  ACTIVE_USERS
+  API_CALLS
+  STORAGE_USAGE
+  CPU_USAGE
+  MEMORY_USAGE
+}
+
+model MaintenanceTicket {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId   String   @db.ObjectId
+  title       String
+  description String?
+  status      TicketStatus @default(OPEN)
+  priority    Priority @default(MEDIUM)
+  component   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  resolvedAt DateTime?
+  
+  // Relations
+  project     Project @relation(fields: [projectId], references: [id])
+  
+  @@map("maintenance_tickets")
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model DecommissionPlan {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId   String   @unique @db.ObjectId
+  targetDate  DateTime
+  status      DecommissionStatus @default(PLANNING)
+  checklist   Json     // Array of checklist items
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  project     Project @relation(fields: [projectId], references: [id])
+  
+  @@map("decommission_plans")
+}
+
+enum DecommissionStatus {
+  PLANNING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+// AED Module Models
+
+model CEOTask {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  status      TaskStatus @default(PENDING)
+  priority    TaskPriority @default(MEDIUM)
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String   @db.ObjectId
+  user        User @relation(fields: [userId], references: [id])
+  
+  @@map("ceo_tasks")
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model CEOContext {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @unique @db.ObjectId
+  location    Location @default(HOME)
+  focusMode   Boolean  @default(false)
+  lastActive  DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("ceo_context")
+}
+
+enum Location {
+  HOME
+  OFFICE
+}
+
+model CommunicationItem {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  source      CommunicationSource
+  externalId  String   // ID from external system (email ID, Slack message ID)
+  subject     String?
+  content     String
+  sender      String
+  urgency     Int      @default(5) // 1-10 scale
+  importance  Int      @default(5) // 1-10 scale
+  status      CommunicationStatus @default(UNREAD)
+  suggestedAction String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("communication_items")
+}
+
+enum CommunicationSource {
+  EMAIL
+  SLACK
+  CALENDAR
+}
+
+enum CommunicationStatus {
+  UNREAD
+  READ
+  ACTED_UPON
+  ARCHIVED
+}
+
+// Predictive Models
+
+model PredictiveModel {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  projectId   String?  @db.ObjectId
+  modelType   ModelType
+  inputData   Json     // Input parameters
+  outputData  Json     // Predictions/results
+  accuracy    Float?   // Model accuracy score
+  createdAt   DateTime @default(now())
+  
+  @@map("predictive_models")
+}
+
+enum ModelType {
+  TCO_FORECAST
+  RISK_ASSESSMENT
+  EOL_PREDICTION
+  TASK_PRIORITIZATION
+}
