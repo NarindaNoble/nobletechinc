@@ -4,6 +4,7 @@ import ClientThemeProvider from '@/components/ClientThemeProvider'
 import { metadata, viewport } from './metadata'
 import './globals.css'
 import '../styles/aura-theme.css'
+import '../styles/aura-enhanced.css'
 
 const chakraPetch = Chakra_Petch({
   subsets: ['latin'],

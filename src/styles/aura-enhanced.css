@@ -1,0 +1,574 @@
+/* Enhanced AuraPunk Design System with Professional UI Patterns */
+
+:root {
+  /* Enhanced Color Palette - Professional + Cyberpunk */
+  --aura-background: #0A0E27;        /* Deep navy-black */
+  --aura-surface: #1A1D2E;           /* Elevated cards */
+  --aura-surface-elevated: #252A3F;   /* Higher elevation */
+  --aura-surface-glass: rgba(26, 29, 46, 0.8); /* Glass morphism */
+  
+  /* Primary Accents - Cyberpunk */
+  --aura-accent-primary: #00E1F4;     /* Neon cyan - interactive */
+  --aura-accent-secondary: #7B61FF;   /* Electric purple - secondary */
+  --aura-accent-tertiary: #F5A623;    /* Amber - alerts/predictions */
+  
+  /* Status Colors - Professional */
+  --aura-status-success: #00FF9F;     /* Neon green - positive metrics */
+  --aura-status-warning: #FFD700;     /* Gold - warnings */
+  --aura-status-danger: #FF006E;      /* Neon magenta - risks */
+  --aura-status-info: #00E1F4;        /* Cyan - information */
+  
+  /* Text Hierarchy */
+  --aura-text-primary: #E5E7EB;       /* High contrast text */
+  --aura-text-secondary: #9CA3AF;     /* Secondary text */
+  --aura-text-muted: #6B7280;         /* Muted text */
+  --aura-text-disabled: #4B5563;      /* Disabled text */
+  
+  /* Professional Spacing System */
+  --aura-space-xs: 0.25rem;   /* 4px */
+  --aura-space-sm: 0.5rem;    /* 8px */
+  --aura-space-md: 1rem;      /* 16px */
+  --aura-space-lg: 1.5rem;     /* 24px */
+  --aura-space-xl: 2rem;      /* 32px */
+  --aura-space-2xl: 3rem;      /* 48px */
+  --aura-space-3xl: 4rem;      /* 64px */
+  
+  /* Professional Border Radius */
+  --aura-radius-sm: 0.25rem;   /* 4px */
+  --aura-radius-md: 0.5rem;    /* 8px */
+  --aura-radius-lg: 0.75rem;   /* 12px */
+  --aura-radius-xl: 1rem;      /* 16px */
+  
+  /* Professional Shadows */
+  --aura-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --aura-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --aura-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --aura-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Cyberpunk Effects */
+  --aura-neon-glow: 0 0 8px rgba(0, 225, 244, 0.6), 0 0 16px rgba(0, 225, 244, 0.4), 0 0 24px rgba(0, 225, 244, 0.2);
+  --aura-neon-glow-purple: 0 0 8px rgba(123, 97, 255, 0.6), 0 0 16px rgba(123, 97, 255, 0.4), 0 0 24px rgba(123, 97, 255, 0.2);
+  --aura-neon-glow-amber: 0 0 8px rgba(245, 166, 35, 0.6), 0 0 16px rgba(245, 166, 35, 0.4), 0 0 24px rgba(245, 166, 35, 0.2);
+  
+  /* Glass Morphism */
+  --aura-glass-bg: rgba(26, 29, 46, 0.8);
+  --aura-glass-border: rgba(255, 255, 255, 0.1);
+  --aura-glass-backdrop: blur(10px);
+}
+
+/* Enhanced Base Styles */
+.aura-bg {
+  background-color: var(--aura-background);
+  color: var(--aura-text-primary);
+}
+
+.aura-surface {
+  background-color: var(--aura-surface);
+  border: 1px solid var(--aura-glass-border);
+  border-radius: var(--aura-radius-lg);
+  box-shadow: var(--aura-shadow-md);
+}
+
+.aura-surface-elevated {
+  background-color: var(--aura-surface-elevated);
+  border: 1px solid var(--aura-glass-border);
+  border-radius: var(--aura-radius-lg);
+  box-shadow: var(--aura-shadow-lg);
+}
+
+.aura-glass {
+  background: var(--aura-glass-bg);
+  border: 1px solid var(--aura-glass-border);
+  backdrop-filter: var(--aura-glass-backdrop);
+  border-radius: var(--aura-radius-lg);
+}
+
+/* Professional Card System */
+.aura-card {
+  background: var(--aura-surface);
+  border: 1px solid var(--aura-glass-border);
+  border-radius: var(--aura-radius-lg);
+  padding: var(--aura-space-lg);
+  box-shadow: var(--aura-shadow-md);
+  transition: all 0.3s ease-in-out;
+}
+
+.aura-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--aura-shadow-lg);
+  border-color: var(--aura-accent-primary);
+}
+
+.aura-card-interactive {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.aura-card-interactive:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--aura-neon-glow);
+}
+
+/* Enhanced Button System */
+.aura-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--aura-space-sm) var(--aura-space-lg);
+  border-radius: var(--aura-radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.aura-button-primary {
+  background-color: var(--aura-accent-primary);
+  color: var(--aura-background);
+  box-shadow: var(--aura-shadow-sm);
+}
+
+.aura-button-primary:hover {
+  background-color: #00C4D4;
+  box-shadow: var(--aura-neon-glow);
+  transform: translateY(-1px);
+}
+
+.aura-button-secondary {
+  background-color: transparent;
+  color: var(--aura-accent-secondary);
+  border: 1px solid var(--aura-accent-secondary);
+}
+
+.aura-button-secondary:hover {
+  background-color: var(--aura-accent-secondary);
+  color: var(--aura-background);
+  box-shadow: var(--aura-neon-glow-purple);
+}
+
+.aura-button-ghost {
+  background-color: transparent;
+  color: var(--aura-text-secondary);
+  border: 1px solid var(--aura-glass-border);
+}
+
+.aura-button-ghost:hover {
+  background-color: var(--aura-surface);
+  color: var(--aura-text-primary);
+  border-color: var(--aura-accent-primary);
+}
+
+/* Professional Input System */
+.aura-input {
+  width: 100%;
+  padding: var(--aura-space-sm) var(--aura-space-md);
+  background-color: var(--aura-surface);
+  border: 1px solid var(--aura-glass-border);
+  border-radius: var(--aura-radius-md);
+  color: var(--aura-text-primary);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.aura-input:focus {
+  outline: none;
+  border-color: var(--aura-accent-primary);
+  box-shadow: 0 0 0 3px rgba(0, 225, 244, 0.1);
+}
+
+.aura-input::placeholder {
+  color: var(--aura-text-muted);
+}
+
+/* Professional Metric Display */
+.aura-metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aura-space-xs);
+  padding: var(--aura-space-lg);
+  background: var(--aura-surface);
+  border: 1px solid var(--aura-glass-border);
+  border-radius: var(--aura-radius-lg);
+  transition: all 0.3s ease-in-out;
+}
+
+.aura-metric:hover {
+  border-color: var(--aura-accent-primary);
+  box-shadow: var(--aura-shadow-md);
+}
+
+.aura-metric-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--aura-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aura-metric-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--aura-text-primary);
+  line-height: 1;
+}
+
+.aura-metric-change {
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--aura-space-xs);
+}
+
+.aura-metric-change.positive {
+  color: var(--aura-status-success);
+}
+
+.aura-metric-change.negative {
+  color: var(--aura-status-danger);
+}
+
+.aura-metric-change.neutral {
+  color: var(--aura-text-muted);
+}
+
+/* Professional Status Indicators */
+.aura-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aura-space-xs);
+  padding: var(--aura-space-xs) var(--aura-space-sm);
+  border-radius: var(--aura-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aura-status-success {
+  background-color: rgba(0, 255, 159, 0.1);
+  color: var(--aura-status-success);
+  border: 1px solid rgba(0, 255, 159, 0.2);
+}
+
+.aura-status-warning {
+  background-color: rgba(255, 215, 0, 0.1);
+  color: var(--aura-status-warning);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.aura-status-danger {
+  background-color: rgba(255, 0, 110, 0.1);
+  color: var(--aura-status-danger);
+  border: 1px solid rgba(255, 0, 110, 0.2);
+}
+
+.aura-status-info {
+  background-color: rgba(0, 225, 244, 0.1);
+  color: var(--aura-status-info);
+  border: 1px solid rgba(0, 225, 244, 0.2);
+}
+
+/* Professional Navigation */
+.aura-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aura-space-xs);
+  padding: var(--aura-space-lg);
+  background: var(--aura-surface);
+  border-right: 1px solid var(--aura-glass-border);
+}
+
+.aura-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--aura-space-md);
+  padding: var(--aura-space-sm) var(--aura-space-md);
+  border-radius: var(--aura-radius-md);
+  color: var(--aura-text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.aura-nav-item:hover {
+  background-color: var(--aura-surface-elevated);
+  color: var(--aura-text-primary);
+}
+
+.aura-nav-item.active {
+  background-color: var(--aura-accent-primary);
+  color: var(--aura-background);
+  box-shadow: var(--aura-shadow-sm);
+}
+
+.aura-nav-item.active:hover {
+  background-color: #00C4D4;
+  box-shadow: var(--aura-neon-glow);
+}
+
+/* Professional Data Tables */
+.aura-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--aura-surface);
+  border-radius: var(--aura-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--aura-shadow-md);
+}
+
+.aura-table th {
+  background: var(--aura-surface-elevated);
+  color: var(--aura-text-primary);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--aura-space-md) var(--aura-space-lg);
+  text-align: left;
+  border-bottom: 1px solid var(--aura-glass-border);
+}
+
+.aura-table td {
+  padding: var(--aura-space-md) var(--aura-space-lg);
+  border-bottom: 1px solid var(--aura-glass-border);
+  color: var(--aura-text-primary);
+  font-size: 0.875rem;
+}
+
+.aura-table tr:hover {
+  background-color: var(--aura-surface-elevated);
+}
+
+/* Professional Loading States */
+.aura-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aura-space-sm);
+  color: var(--aura-text-secondary);
+  font-size: 0.875rem;
+}
+
+.aura-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--aura-glass-border);
+  border-top: 2px solid var(--aura-accent-primary);
+  border-radius: 50%;
+  animation: aura-spin 1s linear infinite;
+}
+
+@keyframes aura-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Professional Empty States */
+.aura-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--aura-space-3xl);
+  text-align: center;
+  color: var(--aura-text-muted);
+}
+
+.aura-empty-icon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: var(--aura-space-lg);
+  opacity: 0.5;
+}
+
+.aura-empty-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--aura-text-secondary);
+  margin-bottom: var(--aura-space-sm);
+}
+
+.aura-empty-description {
+  font-size: 0.875rem;
+  color: var(--aura-text-muted);
+  margin-bottom: var(--aura-space-lg);
+}
+
+/* Professional Form Elements */
+.aura-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--aura-space-sm);
+  margin-bottom: var(--aura-space-lg);
+}
+
+.aura-form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--aura-text-primary);
+}
+
+.aura-form-error {
+  font-size: 0.75rem;
+  color: var(--aura-status-danger);
+  margin-top: var(--aura-space-xs);
+}
+
+.aura-form-help {
+  font-size: 0.75rem;
+  color: var(--aura-text-muted);
+  margin-top: var(--aura-space-xs);
+}
+
+/* Professional Checkbox and Radio */
+.aura-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--aura-space-sm);
+  cursor: pointer;
+  padding: var(--aura-space-sm);
+  border-radius: var(--aura-radius-md);
+  transition: all 0.2s ease-in-out;
+}
+
+.aura-checkbox:hover {
+  background-color: var(--aura-surface);
+}
+
+.aura-checkbox input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--aura-accent-primary);
+}
+
+.aura-radio {
+  display: flex;
+  align-items: center;
+  gap: var(--aura-space-sm);
+  cursor: pointer;
+  padding: var(--aura-space-sm);
+  border-radius: var(--aura-radius-md);
+  transition: all 0.2s ease-in-out;
+}
+
+.aura-radio:hover {
+  background-color: var(--aura-surface);
+}
+
+.aura-radio input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--aura-accent-primary);
+}
+
+/* Professional Progress Indicators */
+.aura-progress {
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--aura-surface);
+  border-radius: var(--aura-radius-sm);
+  overflow: hidden;
+}
+
+.aura-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--aura-accent-primary), var(--aura-accent-secondary));
+  border-radius: var(--aura-radius-sm);
+  transition: width 0.3s ease-in-out;
+}
+
+.aura-progress-text {
+  font-size: 0.75rem;
+  color: var(--aura-text-secondary);
+  margin-top: var(--aura-space-xs);
+}
+
+/* Professional Badge System */
+.aura-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--aura-space-xs);
+  padding: var(--aura-space-xs) var(--aura-space-sm);
+  border-radius: var(--aura-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aura-badge-primary {
+  background-color: rgba(0, 225, 244, 0.1);
+  color: var(--aura-accent-primary);
+  border: 1px solid rgba(0, 225, 244, 0.2);
+}
+
+.aura-badge-secondary {
+  background-color: rgba(123, 97, 255, 0.1);
+  color: var(--aura-accent-secondary);
+  border: 1px solid rgba(123, 97, 255, 0.2);
+}
+
+.aura-badge-success {
+  background-color: rgba(0, 255, 159, 0.1);
+  color: var(--aura-status-success);
+  border: 1px solid rgba(0, 255, 159, 0.2);
+}
+
+.aura-badge-warning {
+  background-color: rgba(255, 215, 0, 0.1);
+  color: var(--aura-status-warning);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.aura-badge-danger {
+  background-color: rgba(255, 0, 110, 0.1);
+  color: var(--aura-status-danger);
+  border: 1px solid rgba(255, 0, 110, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .aura-card {
+    padding: var(--aura-space-md);
+  }
+  
+  .aura-nav {
+    padding: var(--aura-space-md);
+  }
+  
+  .aura-metric {
+    padding: var(--aura-space-md);
+  }
+  
+  .aura-metric-value {
+    font-size: 1.5rem;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --aura-background: #0A0E27;
+    --aura-surface: #1A1D2E;
+    --aura-surface-elevated: #252A3F;
+  }
+}
+
+/* Print styles */
+@media print {
+  .aura-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .aura-button {
+    background-color: transparent !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+  }
+}

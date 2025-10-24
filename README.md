@@ -88,9 +88,9 @@ The design system combines Palantir's enterprise data visualization with NobleTe
 
 ### Installation
 
-```bash
+   ```bash
 # Clone repository
-git clone https://github.com/narindanoble/nobletechinc.git
+   git clone https://github.com/narindanoble/nobletechinc.git
 cd nobletechinc
 
 # Install dependencies
@@ -109,7 +109,7 @@ npm run dev
 
 ### Available Scripts
 
-```bash
+   ```bash
 # Development
 npm run dev          # Start development server
 npm run build        # Build for production
@@ -231,7 +231,7 @@ const tasks = await trpc.aed.getCEOTasks.query({
 
 ### Environment Variables
 
-```bash
+   ```bash
 # Database
 DATABASE_URL="mongodb+srv://username:password@cluster.mongodb.net/aura_platform"
 
