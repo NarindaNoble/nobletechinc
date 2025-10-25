@@ -1,38 +1,159 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { 
-  HomeIcon, 
+import {
+  HomeIcon,
   BuildingOfficeIcon,
-  ClockIcon,
   ChartBarIcon,
+  ClockIcon,
+  CheckCircleIcon,
   ExclamationTriangleIcon,
-  CheckCircleIcon
+  BellIcon,
+  ChatBubbleLeftRightIcon,
+  EnvelopeIcon,
+  CalendarIcon,
+  UserGroupIcon,
+  CogIcon,
+  EyeIcon,
+  ArrowRightIcon,
+  TargetIcon,
+  FlagIcon,
 } from '@heroicons/react/24/outline'
+import MilestoneTriggerSystem from '@/components/aura/MilestoneTriggerSystem'
 import AuraNavigation from '@/components/AuraNavigation'
+import { useRealtimeData } from '@/lib/realtime-mongodb'
+import { useNotifications } from '@/lib/notification-system'
+
+interface CEOData {
+  kpis: {
+    activeProjects: number
+    pipelineValue: number
+    clientHealth: number
+    teamCapacity: number
+  }
+  tasks: Array<{
+    id: string
+    title: string
+    due: string
+    priority: string
+    status: string
+  }>
+  communications: Array<{
+    id: string
+    type: string
+    title: string
+    from: string
+    urgency: string
+    timestamp: string
+  }>
+}
 
 export default function AEDCommand() {
   const [location, setLocation] = useState<'HOME' | 'OFFICE'>('HOME')
+  const [showMilestoneSystem, setShowMilestoneSystem] = useState(false)
+  const [ceoData, setCeoData] = useState<CEOData | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const mockKPIs = {
-    activeProjects: 12,
-    pipelineValue: 2500000,
-    clientHealthScore: 94,
-    teamCapacity: 78
+  // Real-time data from MongoDB
+  const { data: milestones } = useRealtimeData('milestones', { userId: 'current-user-id' })
+  const { data: triggers } = useRealtimeData('triggers', { userId: 'current-user-id' })
+  const { data: tasks } = useRealtimeData('ceo_tasks', { userId: 'current-user-id' })
+  const { notifications } = useNotifications('current-user-id')
+
+  // Load CEO data from real sources
+  useEffect(() => {
+    const loadCEOData = async () => {
+      try {
+        setLoading(true)
+        
+        // Load real data from APIs
+        const [kpisResponse, tasksResponse, commsResponse] = await Promise.all([
+          fetch('/api/ceo/kpis'),
+          fetch('/api/ceo/tasks'),
+          fetch('/api/ceo/communications')
+        ])
+
+        const kpis = await kpisResponse.json()
+        const tasksData = await tasksResponse.json()
+        const comms = await commsResponse.json()
+
+        setCeoData({
+          kpis: kpis.data || { activeProjects: 0, pipelineValue: 0, clientHealth: 0, teamCapacity: 0 },
+          tasks: tasksData.data || [],
+          communications: comms.data || []
+        })
+      } catch (error) {
+        console.error('Error loading CEO data:', error)
+        // Fallback to empty data
+        setCeoData({
+          kpis: { activeProjects: 0, pipelineValue: 0, clientHealth: 0, teamCapacity: 0 },
+          tasks: [],
+          communications: []
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadCEOData()
+  }, [])
+
+  const homeModeData = [
+    { icon: ClockIcon, label: 'Virtual Meetings', value: `${ceoData?.kpis.activeProjects || 0} scheduled today` },
+    { icon: ChartBarIcon, label: 'Focus Blocks', value: '2 hours available' },
+    { icon: CheckCircleIcon, label: 'Deep Work', value: 'Strategic planning' },
+  ]
+
+  const officeModeData = [
+    { icon: BuildingOfficeIcon, label: 'In-Person Meetings', value: '2 scheduled today' },
+    { icon: UserGroupIcon, label: 'Team in Office', value: '8 people' },
+    { icon: ChartBarIcon, label: 'Company KPIs', value: 'All systems green' },
+  ]
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'CRITICAL': return 'bg-[var(--aura-accent-danger)] text-white'
+      case 'HIGH': return 'bg-[var(--aura-accent-warning)] text-white'
+      case 'MEDIUM': return 'bg-[var(--aura-accent-primary)] text-white'
+      case 'LOW': return 'bg-[var(--aura-accent-success)] text-white'
+      default: return 'bg-[var(--aura-accent-primary)] text-white'
+    }
   }
 
-  const mockTasks = [
-    { id: 1, title: 'Review Q4 strategic roadmap', priority: 'CRITICAL', due: 'Today' },
-    { id: 2, title: 'Client escalation: Phoenix project', priority: 'HIGH', due: '2 hours' },
-    { id: 3, title: 'Board meeting preparation', priority: 'MEDIUM', due: 'Tomorrow' }
-  ]
+  const getUrgencyColor = (urgency: string) => {
+    switch (urgency) {
+      case 'HIGH': return 'bg-[var(--aura-accent-danger)]'
+      case 'MEDIUM': return 'bg-[var(--aura-accent-warning)]'
+      case 'LOW': return 'bg-[var(--aura-accent-success)]'
+      default: return 'bg-[var(--aura-accent-primary)]'
+    }
+  }
 
-  const mockComms = [
-    { id: 1, source: 'EMAIL', sender: 'Sarah Chen (CTO)', subject: 'Phoenix project budget concerns', urgency: 9 },
-    { id: 2, source: 'SLACK', sender: 'Engineering Team', subject: 'Production incident resolved', urgency: 6 },
-    { id: 3, source: 'EMAIL', sender: 'Legal Team', subject: 'Contract renewal - Acme Corp', urgency: 4 }
-  ]
+  if (showMilestoneSystem) {
+    return (
+      <MilestoneTriggerSystem 
+        userId="current-user-id"
+        onMilestoneUpdate={(milestone) => {
+          console.log('Milestone updated:', milestone)
+        }}
+        onTriggerUpdate={(trigger) => {
+          console.log('Trigger updated:', trigger)
+        }}
+      />
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen aura-theme aura-tech-grid flex items-center justify-center">
+        <div className="text-center">
+          <div className="aura-spinner mx-auto mb-4"></div>
+          <p className="text-[var(--aura-text-secondary)]">Loading CEO Dashboard...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen aura-theme aura-tech-grid">
@@ -51,6 +172,17 @@ export default function AEDCommand() {
             </div>
             
             <div className="flex items-center space-x-4">
+              <button
+                onClick={() => setShowMilestoneSystem(true)}
+                className="aura-btn aura-btn-secondary flex items-center gap-2"
+              >
+                <TargetIcon className="w-4 h-4" />
+                Milestones & Triggers
+              </button>
+              <div className="flex items-center gap-2 text-sm text-[var(--aura-text-secondary)]">
+                <BellIcon className="w-4 h-4" />
+                {notifications.filter(n => !n.isRead).length} notifications
+              </div>
               <div className="text-sm text-[var(--aura-text-secondary)]">
                 Welcome, <span className="text-[var(--aura-accent-secondary)]">Noble</span>
               </div>
@@ -121,42 +253,32 @@ export default function AEDCommand() {
             <div className="aura-card">
               <h2 className="aura-chart-title mb-4">🏠 Home Mode - Deep Work Focus</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <ClockIcon className="w-8 h-8 text-[var(--aura-accent-primary)] mx-auto mb-2" />
-                  <h3 className="font-semibold mb-2">Virtual Meetings</h3>
-                  <p className="text-sm text-[var(--aura-text-secondary)]">3 scheduled today</p>
-                </div>
-                <div className="text-center">
-                  <ChartBarIcon className="w-8 h-8 text-[var(--aura-accent-secondary)] mx-auto mb-2" />
-                  <h3 className="font-semibold mb-2">Focus Blocks</h3>
-                  <p className="text-sm text-[var(--aura-text-secondary)]">2 hours available</p>
-                </div>
-                <div className="text-center">
-                  <CheckCircleIcon className="w-8 h-8 text-[var(--aura-accent-success)] mx-auto mb-2" />
-                  <h3 className="font-semibold mb-2">Deep Work</h3>
-                  <p className="text-sm text-[var(--aura-text-secondary)]">Strategic planning</p>
-                </div>
+                {homeModeData.map((item, index) => {
+                  const Icon = item.icon
+                  return (
+                    <div key={index} className="text-center">
+                      <Icon className="w-8 h-8 text-[var(--aura-accent-primary)] mx-auto mb-2" />
+                      <h3 className="font-semibold mb-2">{item.label}</h3>
+                      <p className="text-sm text-[var(--aura-text-secondary)]">{item.value}</p>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           ) : (
             <div className="aura-card">
               <h2 className="aura-chart-title mb-4">🏢 Office Mode - Leadership & Collaboration</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <BuildingOfficeIcon className="w-8 h-8 text-[var(--aura-accent-primary)] mx-auto mb-2" />
-                  <h3 className="font-semibold mb-2">In-Person Meetings</h3>
-                  <p className="text-sm text-[var(--aura-text-secondary)]">Conference Room A - 2:00 PM</p>
-                </div>
-                <div className="text-center">
-                  <ChartBarIcon className="w-8 h-8 text-[var(--aura-accent-secondary)] mx-auto mb-2" />
-                  <h3 className="font-semibold mb-2">Team Status</h3>
-                  <p className="text-sm text-[var(--aura-text-secondary)]">8 team members in office</p>
-                </div>
-                <div className="text-center">
-                  <ExclamationTriangleIcon className="w-8 h-8 text-[var(--aura-accent-warning)] mx-auto mb-2" />
-                  <h3 className="font-semibold mb-2">Client Alerts</h3>
-                  <p className="text-sm text-[var(--aura-text-secondary)]">2 require attention</p>
-                </div>
+                {officeModeData.map((item, index) => {
+                  const Icon = item.icon
+                  return (
+                    <div key={index} className="text-center">
+                      <Icon className="w-8 h-8 text-[var(--aura-accent-primary)] mx-auto mb-2" />
+                      <h3 className="font-semibold mb-2">{item.label}</h3>
+                      <p className="text-sm text-[var(--aura-text-secondary)]">{item.value}</p>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )}
@@ -172,19 +294,19 @@ export default function AEDCommand() {
           <h2 className="aura-chart-title mb-4">Executive KPIs</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="aura-card">
-              <div className="aura-metric-value">{mockKPIs.activeProjects}</div>
+              <div className="aura-metric-value">{ceoData?.kpis.activeProjects || 0}</div>
               <div className="aura-metric-label">Active Projects</div>
             </div>
             <div className="aura-card">
-              <div className="aura-metric-value">${(mockKPIs.pipelineValue / 1000000).toFixed(1)}M</div>
+              <div className="aura-metric-value">${(ceoData?.kpis.pipelineValue || 0) / 1000000}M</div>
               <div className="aura-metric-label">Pipeline Value</div>
             </div>
             <div className="aura-card">
-              <div className="aura-metric-value">{mockKPIs.clientHealthScore}%</div>
+              <div className="aura-metric-value">{ceoData?.kpis.clientHealth || 0}%</div>
               <div className="aura-metric-label">Client Health</div>
             </div>
             <div className="aura-card">
-              <div className="aura-metric-value">{mockKPIs.teamCapacity}%</div>
+              <div className="aura-metric-value">{ceoData?.kpis.teamCapacity || 0}%</div>
               <div className="aura-metric-label">Team Capacity</div>
             </div>
           </div>
@@ -201,21 +323,30 @@ export default function AEDCommand() {
           >
             <h3 className="aura-chart-title mb-4">Strategic Tasks</h3>
             <div className="space-y-3">
-              {mockTasks.map((task, index) => (
-                <div key={task.id} className="flex items-center justify-between p-3 bg-[var(--aura-surface-elevated)] rounded-lg">
-                  <div className="flex-1">
-                    <p className="font-medium text-[var(--aura-text-primary)]">{task.title}</p>
-                    <p className="text-sm text-[var(--aura-text-secondary)]">Due: {task.due}</p>
+              {ceoData?.tasks.length ? (
+                ceoData.tasks.map((task, index) => (
+                  <div key={task.id} className="flex items-center justify-between p-3 bg-[var(--aura-surface-elevated)] rounded-lg">
+                    <div className="flex-1">
+                      <p className="font-medium text-[var(--aura-text-primary)]">{task.title}</p>
+                      <p className="text-sm text-[var(--aura-text-secondary)]">Due: {task.due}</p>
+                    </div>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${getPriorityColor(task.priority)}`}>
+                      {task.priority}
+                    </span>
                   </div>
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    task.priority === 'CRITICAL' ? 'bg-[var(--aura-accent-danger)] text-white' :
-                    task.priority === 'HIGH' ? 'bg-[var(--aura-accent-warning)] text-white' :
-                    'bg-[var(--aura-accent-primary)] text-white'
-                  }`}>
-                    {task.priority}
-                  </span>
+                ))
+              ) : (
+                <div className="text-center py-8">
+                  <FlagIcon className="w-12 h-12 text-[var(--aura-text-muted)] mx-auto mb-4" />
+                  <p className="text-[var(--aura-text-secondary)] mb-4">No tasks available</p>
+                  <button
+                    onClick={() => setShowMilestoneSystem(true)}
+                    className="aura-btn aura-btn-primary"
+                  >
+                    Create Your First Milestone
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
           </motion.div>
 
@@ -228,27 +359,30 @@ export default function AEDCommand() {
           >
             <h3 className="aura-chart-title mb-4">Communication Triage</h3>
             <div className="space-y-3">
-              {mockComms.map((comm, index) => (
-                <div key={comm.id} className="flex items-center justify-between p-3 bg-[var(--aura-surface-elevated)] rounded-lg">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <span className={`w-2 h-2 rounded-full ${
-                        comm.urgency >= 8 ? 'bg-[var(--aura-accent-danger)]' :
-                        comm.urgency >= 6 ? 'bg-[var(--aura-accent-warning)]' :
-                        'bg-[var(--aura-accent-success)]'
-                      }`} />
-                      <span className="text-xs text-[var(--aura-text-secondary)]">{comm.source}</span>
+              {ceoData?.communications.length ? (
+                ceoData.communications.map((comm, index) => (
+                  <div key={comm.id} className="flex items-center justify-between p-3 bg-[var(--aura-surface-elevated)] rounded-lg">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-1">
+                        <span className={`w-2 h-2 rounded-full ${getUrgencyColor(comm.urgency)}`} />
+                        <span className="text-xs text-[var(--aura-text-secondary)]">{comm.type}</span>
+                      </div>
+                      <p className="font-medium text-[var(--aura-text-primary)]">{comm.title}</p>
+                      <p className="text-sm text-[var(--aura-text-secondary)]">From: {comm.from}</p>
                     </div>
-                    <p className="font-medium text-[var(--aura-text-primary)]">{comm.subject}</p>
-                    <p className="text-sm text-[var(--aura-text-secondary)]">From: {comm.sender}</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-medium text-[var(--aura-accent-primary)]">
-                      Urgency: {comm.urgency}/10
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-[var(--aura-accent-primary)]">
+                        {comm.urgency}
+                      </div>
                     </div>
                   </div>
+                ))
+              ) : (
+                <div className="text-center py-8">
+                  <BellIcon className="w-12 h-12 text-[var(--aura-text-muted)] mx-auto mb-4" />
+                  <p className="text-[var(--aura-text-secondary)]">No communications available</p>
                 </div>
-              ))}
+              )}
             </div>
           </motion.div>
         </div>
