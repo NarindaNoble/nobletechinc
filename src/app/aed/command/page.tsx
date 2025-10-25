@@ -19,11 +19,15 @@ import {
   ArrowRightIcon,
   TargetIcon,
   FlagIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline'
 import MilestoneTriggerSystem from '@/components/aura/MilestoneTriggerSystem'
+import LiveNotificationSystem from '@/components/aura/LiveNotificationSystem'
+import PersonalAssistant from '@/components/aura/PersonalAssistant'
 import AuraNavigation from '@/components/AuraNavigation'
 import { useRealtimeData } from '@/lib/realtime-mongodb'
 import { useNotifications } from '@/lib/notification-system'
+import { useTimelineNotifications } from '@/lib/timeline-notifications'
 
 interface CEOData {
   kpis: {
@@ -52,6 +56,7 @@ interface CEOData {
 export default function AEDCommand() {
   const [location, setLocation] = useState<'HOME' | 'OFFICE'>('HOME')
   const [showMilestoneSystem, setShowMilestoneSystem] = useState(false)
+  const [showPersonalAssistant, setShowPersonalAssistant] = useState(true)
   const [ceoData, setCeoData] = useState<CEOData | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -60,6 +65,7 @@ export default function AEDCommand() {
   const { data: triggers } = useRealtimeData('triggers', { userId: 'current-user-id' })
   const { data: tasks } = useRealtimeData('ceo_tasks', { userId: 'current-user-id' })
   const { notifications } = useNotifications('current-user-id')
+  const { events: timelineEvents, notifications: timelineNotifications } = useTimelineNotifications('current-user-id')
 
   // Load CEO data from real sources
   useEffect(() => {
@@ -178,6 +184,15 @@ export default function AEDCommand() {
               >
                 <TargetIcon className="w-4 h-4" />
                 Milestones & Triggers
+              </button>
+              <button
+                onClick={() => setShowPersonalAssistant(!showPersonalAssistant)}
+                className={`aura-btn flex items-center gap-2 ${
+                  showPersonalAssistant ? 'aura-btn-primary' : 'aura-btn-ghost'
+                }`}
+              >
+                <SparklesIcon className="w-4 h-4" />
+                AI Assistant
               </button>
               <div className="flex items-center gap-2 text-sm text-[var(--aura-text-secondary)]">
                 <BellIcon className="w-4 h-4" />
@@ -401,6 +416,22 @@ export default function AEDCommand() {
       </div>
 
       <AuraNavigation />
+      
+      {/* Live Notification System */}
+      <LiveNotificationSystem 
+        userId="current-user-id"
+        isActive={true}
+        onNotificationAction={(notification) => {
+          console.log('Notification action:', notification)
+        }}
+      />
+      
+      {/* Personal Assistant */}
+      <PersonalAssistant 
+        userId="current-user-id"
+        isVisible={showPersonalAssistant}
+        onToggle={() => setShowPersonalAssistant(!showPersonalAssistant)}
+      />
     </div>
   )
 }
